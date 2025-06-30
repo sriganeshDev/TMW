@@ -513,6 +513,7 @@ import {
   getCompletionTrends,
   getUserTaskAnalytics,
 } from "../../services/dashboard/AdminDashboardServices";
+import { CommonDropdown } from "../reusablecomponents/CommonDropDown";
 
 const AdminDashBoard = () => {
   const [timeRange, setTimeRange] = useState("7days");
@@ -535,6 +536,20 @@ const AdminDashBoard = () => {
     },
   });
 
+  const timeOptions = [
+    { value: "7days", label: "Last 7 Days" },
+    { value: "30days", label: "Last 30 Days" },
+    { value: "90days", label: "Last 90 Days" },
+    { value: "1year", label: "Last Year" },
+  ];
+
+  const projectOptions = [
+    { value: "all", label: "All Projects" },
+    ...projects.map((project) => ({
+      value: project._id,
+      label: project.projectName,
+    })),
+  ];
   // Fetch projects list for dropdown
   useEffect(() => {
     const fetchProjects = async () => {
@@ -662,21 +677,37 @@ const AdminDashBoard = () => {
     }
     return null;
   };
+  const StatCard = ({ title, value, icon: Icon, color, subtitle, loading }) => {
+    const bgVariants = {
+      "text-blue-600": "bg-blue-600/10",
+      "text-green-600": "bg-green-600/10",
+      "text-purple-600": "bg-purple-600/10",
+      "text-orange-600": "bg-orange-600/10",
+      "text-red-600": "bg-red-600/10",
+      // Add more as needed
+    };
 
-  const StatCard = ({ title, value, icon: Icon, color, subtitle }) => (
-    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className={`text-2xl font-bold ${color}`}>
-            {loading ? <div className="loader"></div> : value || 0}
-          </p>
-          {subtitle && <p className="text-xs text-gray-500 mt-1">{subtitle}</p>}
+    const bgColor = bgVariants[color] || "bg-gray-100";
+
+    return (
+      <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-600">{title}</p>
+            <p className={`text-2xl font-bold ${color}`}>
+              {loading ? <div className="loader" /> : value || 0}
+            </p>
+            {subtitle && (
+              <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+            )}
+          </div>
+          <div className={`p-2 rounded-full ${bgColor}`}>
+            <Icon className={`h-8 w-8 ${color}`} />
+          </div>
         </div>
-        <Icon className={`h-8 w-8 ${color}`} />
       </div>
-    </div>
-  );
+    );
+  };
 
   // Loading component
   if (loading) {
@@ -721,35 +752,33 @@ const AdminDashBoard = () => {
 
         <div className="bg-white p-3 flex w-full justify-end sm:p-4 rounded-lg shadow-md mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-start sm:items-center">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <CalendarMonthOutlinedIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
-              <select
+            <div className="flex items-center gap-2 w-full sm:w-60">
+              <CalendarMonthOutlinedIcon className="h-5 w-5 text-gray-400 flex-shrink-0" />
+
+              <CommonDropdown
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 sm:px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                options={timeOptions}
+                placeholder="Select Time Range"
+                // label="Time Range"
+                required={false}
+                fullWidth={true}
                 disabled={loading}
-              >
-                <option value="7days">Last 7 Days</option>
-                <option value="30days">Last 30 Days</option>
-                <option value="90days">Last 90 Days</option>
-                <option value="1year">Last Year</option>
-              </select>
+              />
             </div>
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <AccountTreeOutlinedIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
-              <select
+            <div className="flex items-center gap-2 w-full sm:w-80">
+              <AccountTreeOutlinedIcon className="h-5 w-5 text-gray-400 flex-shrink-0" />
+
+              <CommonDropdown
                 value={selectedProject}
                 onChange={(e) => setSelectedProject(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 sm:px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                options={projectOptions}
+                placeholder="Select Project"
+                // label="Project"
+                required={false}
+                fullWidth={true}
                 disabled={loading}
-              >
-                <option value="all">All Projects</option>
-                {projects.map((project) => (
-                  <option key={project._id} value={project._id}>
-                    {project.projectName}
-                  </option>
-                ))}
-              </select>
+              />
             </div>
           </div>
         </div>

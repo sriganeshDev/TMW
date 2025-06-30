@@ -1200,6 +1200,7 @@ import {
 } from "../../services/dashboard/UserDashBoardServices";
 import TaskCardUi from "../task/TaskCardUi";
 import { useNavigate } from "react-router-dom";
+import { CommonDropdown } from "../reusablecomponents/CommonDropDown";
 
 const UserDashboard = () => {
   const [timeRange, setTimeRange] = useState("7days");
@@ -1218,6 +1219,13 @@ const UserDashboard = () => {
     userTaskData: [],
     overallStats: {},
   });
+
+  const timeOptions = [
+    { value: "7days", label: "Last 7 Days" },
+    { value: "30days", label: "Last 30 Days" },
+    { value: "90days", label: "Last 90 Days" },
+    { value: "1year", label: "Last Year" },
+  ];
   const navigate = useNavigate();
   useEffect(() => {
     // Get user info from localStorage
@@ -1229,7 +1237,13 @@ const UserDashboard = () => {
     setUserName(storedUserName);
     setUserId(storedUserId);
   }, []);
-
+  const projectOptions = [
+    { value: "all", label: "All My Projects" },
+    ...projects.map((project) => ({
+      value: project._id,
+      label: project.projectName,
+    })),
+  ];
   // Fetch user projects
   useEffect(() => {
     const fetchUserProjects = async () => {
@@ -1351,8 +1365,13 @@ const UserDashboard = () => {
   };
 
   const StatCard = ({ title, value, icon: Icon, color, subtitle }) => {
-    const bgColor = color.replace("text-", "bg-") + "/10"; // e.g., text-blue-600 → bg-blue-600/10
-
+    const bgVariants = {
+      "text-blue-600": "bg-blue-600/10",
+      "text-green-600": "bg-green-600/10",
+      "text-purple-600": "bg-purple-600/10",
+      "text-orange-600": "bg-orange-600/10",
+    };
+    const bgColor = bgVariants[color] || "bg-gray-100";
     return (
       <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300">
         <div className="flex items-center justify-between gap-4">
@@ -1420,35 +1439,30 @@ const UserDashboard = () => {
 
         <div className="bg-white p-3 w-full flex justify-end sm:p-4 rounded-lg shadow-md mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 items-start sm:items-center">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <CalendarMonthOutlinedIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
-              <select
+            {/* Time Range Dropdown */}
+            <div className="flex items-center gap-2 w-full sm:w-[240px]">
+              <CalendarMonthOutlinedIcon className="h-5 w-5 text-gray-400 flex-shrink-0" />
+              <CommonDropdown
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 sm:px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                options={timeOptions}
+                placeholder="Select Time Range"
                 disabled={loading}
-              >
-                <option value="7days">Last 7 Days</option>
-                <option value="30days">Last 30 Days</option>
-                <option value="90days">Last 90 Days</option>
-                <option value="1year">Last Year</option>
-              </select>
+                fullWidth
+              />
             </div>
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <AccountTreeOutlinedIcon className="h-4 w-4 text-gray-400 flex-shrink-0" />
-              <select
+
+            {/* Project Dropdown */}
+            <div className="flex items-center gap-2 w-full sm:w-[280px]">
+              <AccountTreeOutlinedIcon className="h-5 w-5 text-gray-400 flex-shrink-0" />
+              <CommonDropdown
                 value={selectedProject}
                 onChange={(e) => setSelectedProject(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 sm:px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 flex-1 sm:flex-none"
+                options={projectOptions}
+                placeholder="Select Project"
                 disabled={loading}
-              >
-                <option value="all">All My Projects</option>
-                {projects.map((project) => (
-                  <option key={project._id} value={project._id}>
-                    {project.projectName}
-                  </option>
-                ))}
-              </select>
+                fullWidth
+              />
             </div>
           </div>
         </div>

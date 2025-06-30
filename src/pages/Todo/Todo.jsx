@@ -23,6 +23,7 @@ import nofound from "../../assets/no-data2.gif";
 import KanbanView from "../../components/todo/KanbanVeiw";
 import { ByNameAvater } from "../../utils/helpers/basicHelper";
 import { toast } from "react-toastify";
+import { CommonDropdown } from "../../components/reusablecomponents/CommonDropDown";
 
 const statusOptions = [
   { value: "To do", label: "To Do", dotColor: "bg-cyan-500" },
@@ -321,20 +322,16 @@ const Todo = () => {
               {task.description}
             </p>
           </div>
-
-          <div className="relative ml-6 flex-shrink-0">
-            <select
+          <div className="relative ml-6 flex-shrink-0 min-w-[140px]">
+            <CommonDropdown
               value={task.status}
               onChange={(e) => handleStatusChange(e.target.value)}
+              options={statusOptions}
+              fullWidth
               disabled={updating}
-              className="text-sm font-medium rounded-lg border border-gray-200 bg-white min-w-[140px] px-4 py-2.5 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-            >
-              {statusOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+              placeholder="Select Status"
+            />
+
             <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
               {updating ? (
                 <Loader2 className="w-4 h-4 text-gray-500 animate-spin" />
