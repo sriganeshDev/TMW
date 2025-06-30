@@ -486,6 +486,9 @@ import {
   Shield,
 } from "lucide-react";
 import logo from "../../assets/logo.svg";
+import { loginAPI, RegisterAPI } from "../../services/auth/authServices";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 export default function SplitScreenAuthUI() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -498,7 +501,7 @@ export default function SplitScreenAuthUI() {
     password: "",
     confirmPassword: "",
   });
-
+  const navigate = useNavigate();
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -509,29 +512,94 @@ export default function SplitScreenAuthUI() {
   const handleSubmit = async () => {
     const { userName, email, password, confirmPassword } = formData;
 
-    // Basic validation
+    // Validation
     if (!email || !password || (!isLogin && (!userName || !confirmPassword))) {
-      alert("Please fill in all required fields.");
+      toast.error("Please fill in all required fields.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       return;
     }
 
     if (!isLogin && password !== confirmPassword) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       return;
     }
 
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      if (isLogin) {
-        alert("Login successful!");
+    try {
+      const response = isLogin
+        ? await loginAPI({ email, password })
+        : await RegisterAPI({ userName, email, password });
+
+      if (response.status === 500) {
+        toast.error(response.message || "Something went wrong.", {
+          position: "top-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+      console.log(response, "response");
+      if (response?.token) {
+        navigate("/smart-HR/dashboard");
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("userName", response.findEmail.userName);
+        localStorage.setItem("role", response.findEmail.role);
+        localStorage.setItem("userId", response.findEmail._id);
+        localStorage.setItem("avatar", response.findEmail?.profileFileName);
+
+        toast.success("Login successful! Welcome back!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+
+        setTimeout(() => {
+          navigate("/smart-HR/dashboard");
+        }, 1000);
       } else {
-        alert("Account created successfully!");
+        toast.success("Account created successfully! You can now log in.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         switchMode();
       }
+    } catch (err) {
+      console.error(err);
+      toast.error("An unexpected error occurred. Please try again.", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const switchMode = () => {
@@ -719,6 +787,7 @@ export default function SplitScreenAuthUI() {
 
             {/* Submit */}
             <button
+              type="submit"
               onClick={handleSubmit}
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-3 px-6 rounded-xl font-semibold hover:from-red-700 hover:to-rose-700 transform hover:scale-105 transition-all duration-300 flex items-center justify-center group shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
