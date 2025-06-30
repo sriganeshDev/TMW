@@ -23,6 +23,7 @@ import {
 } from "../../services/project/ProjectServices";
 import { getAllTasksForUser } from "../../services/Task/TaskServices";
 import UserProjectCard from "../../components/projects/UserProject/UserProjectCard";
+import { toast } from "react-toastify";
 
 // API Base URL
 const API_BASE_URL = "http://localhost:7000/project";
@@ -446,7 +447,6 @@ const Project = () => {
     setFilterModal(false);
   };
 
-  // Handle form submission (same as before)
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     console.log("Form values:", values);
 
@@ -472,6 +472,7 @@ const Project = () => {
             : project
         )
       );
+      toast.success("Project updated successfully!");
       setSubmitting(false);
       resetForm();
       closeAddEditModal();
@@ -479,6 +480,7 @@ const Project = () => {
       const result = await createProject(values);
 
       if (result.success) {
+        toast.success("Project created successfully!");
         setSubmitting(false);
         resetForm();
         closeAddEditModal();

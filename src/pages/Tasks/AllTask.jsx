@@ -684,6 +684,7 @@ import {
 } from "../../services/Task/TaskServices";
 import { getAllProjectNames } from "../../services/project/ProjectServices";
 import { getAllUserNames } from "../../services/user/UserServices";
+import { toast } from "react-toastify";
 
 const AllTask = () => {
   const [addEditModal, setAddEditModal] = useState(false);
@@ -817,6 +818,7 @@ const AllTask = () => {
         const response = await updateTask(editingTask._id, taskData);
         if (response.status === "200") {
           await fetchTasks();
+          toast.success("Task updated successfully!");
           resetForm();
           closeAddEditModal();
         }
@@ -824,6 +826,7 @@ const AllTask = () => {
         const response = await createTaskForProject(taskData);
         if (response.status === "200") {
           await fetchTasks();
+          toast.success("Task created successfully!");
           resetForm();
           closeAddEditModal();
         }
@@ -862,6 +865,7 @@ const AllTask = () => {
         const response = await deleteTask(deleteTaskId);
         if (response.status === "200") {
           await fetchTasks();
+          toast.success("Task deleted successfully");
           setOpenConfirm(false);
           setDeleteTaskId(null);
         }

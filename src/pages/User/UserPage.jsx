@@ -868,6 +868,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { getAllUser, DeleteUser } from "../../services/user/UserServices";
 import { RegisterAPI } from "../../services/auth/authServices";
 import { PhoneIcon } from "lucide-react";
+import { toast } from "react-toastify";
 
 const UserManagement = () => {
   const [addModal, setAddModal] = useState(false);
@@ -944,7 +945,8 @@ const UserManagement = () => {
   const confirmDelete = async () => {
     try {
       await DeleteUser(selectedUserId);
-      await fetchUsers(searchTerm, currentPage); // Refresh with current search and page
+      await fetchUsers(searchTerm, currentPage);
+      toast.success("User deleted successfully!"); // Refresh with current search and page
       setOpenConfirm(false);
       setSelectedUserId(null);
     } catch (error) {
@@ -961,10 +963,12 @@ const UserManagement = () => {
       };
 
       await RegisterAPI(payload);
-      await fetchUsers(searchTerm, 1); // Refresh the list with current search
+      await fetchUsers(searchTerm, 1);
+      toast.success("User created successfully!");
       resetForm();
       addCloseModal();
     } catch (error) {
+      toast.error("Failed to create user.");
       console.error("Error creating user:", error);
     } finally {
       setSubmitting(false);

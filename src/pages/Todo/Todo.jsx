@@ -22,6 +22,7 @@ import {
 import nofound from "../../assets/no-data2.gif";
 import KanbanView from "../../components/todo/KanbanVeiw";
 import { ByNameAvater } from "../../utils/helpers/basicHelper";
+import { toast } from "react-toastify";
 
 const statusOptions = [
   { value: "To do", label: "To Do", dotColor: "bg-cyan-500" },
@@ -262,6 +263,7 @@ const Todo = () => {
         if (response.status === 200) {
           // -<----------------- Update counts  ------------>
           await handleTaskUpdate();
+          toast.success(`Task status updated to "${newStatus}"`);
         } else {
           console.error("Failed to update task status:", response.message);
         }
