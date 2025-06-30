@@ -1111,36 +1111,42 @@ const CommonLayout = () => {
       icon: <DashboardOutlinedIcon />,
       path: "/smart-HR/dashboard",
       allowedRoles: ["Admin", "Member"],
+      label: "dashboard",
     },
     {
       text: "ToDo",
       icon: <ChecklistOutlinedIcon />,
       path: "/smart-HR/todo",
       allowedRoles: ["Member"],
+      label: "todo",
     },
     {
       text: "Projects",
       icon: <FolderOpenOutlinedIcon />,
       path: "/smart-HR/project",
       allowedRoles: ["Admin", "Member"],
+      label: "project",
     },
     {
       text: "Tasks",
       icon: <ChecklistIcon />,
       path: "/smart-HR/tasks",
       allowedRoles: ["Admin"],
+      label: "tasks",
     },
     {
       text: "Users Management",
       icon: <GroupOutlinedIcon />,
       path: "/smart-HR/users",
       allowedRoles: ["Admin"],
+      label: "users",
     },
     {
       text: "Profile",
       icon: <AccountCircleOutlinedIcon />,
       path: "/smart-HR/profile",
       allowedRoles: ["Admin", "Member"],
+      label: "profile",
     },
   ];
 
@@ -1148,10 +1154,6 @@ const CommonLayout = () => {
   const menuItems = useMemo(() => {
     return allMenuItems.filter((item) => item.allowedRoles.includes(role));
   }, [role]);
-
-  const isActiveItem = (itemPath) => {
-    return currentPath === itemPath;
-  };
 
   // Calculate current drawer width
   const currentDrawerWidth = isMobile
@@ -1166,7 +1168,7 @@ const CommonLayout = () => {
       <Toolbar />
       <List sx={{ px: 1 }}>
         {menuItems.map((item) => {
-          const isActive = isActiveItem(item.path);
+          const isActive = currentPath.includes(item.label);
           const isCollapsed = !isMobile && desktopCollapsed;
 
           return (
