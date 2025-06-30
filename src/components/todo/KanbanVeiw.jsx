@@ -36,7 +36,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
       title: "To Do",
       color: "bg-cyan-50",
       borderColor: "border-cyan-200",
-      headerColor: "bg-cyan-500",
+      headerColor: "bg-cyan-400",
       dotColor: "bg-cyan-500",
     },
     {
@@ -45,14 +45,14 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
       color: "bg-purple-50",
       borderColor: "border-purple-200",
       headerColor: "bg-purple-500",
-      dotColor: "bg-purple-500",
+      dotColor: "bg-purple-400",
     },
     {
       id: "Completed",
       title: "Completed",
       color: "bg-green-50",
       borderColor: "border-green-200",
-      headerColor: "bg-green-500",
+      headerColor: "bg-green-400",
       dotColor: "bg-green-500",
     },
   ];
@@ -105,7 +105,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
     }
   };
 
-  //<---------------- Fetch all tasks----------------->
+  // Fetch all tasks
   const fetchTasks = async () => {
     setLoading(true);
     setError(null);
@@ -132,7 +132,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
     fetchTasks();
   }, []);
 
-  // <------------------Filter tasks based on search term------------>
+  // Filter tasks based on search term
   const filteredTasks = tasks.filter(
     (task) =>
       task.taskTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -142,23 +142,27 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
         .includes(searchTerm.toLowerCase())
   );
 
-  //<------------------ Group tasks by status for kanban columns---------------->
+  // Group tasks by status for kanban columns
   const getTasksByStatus = (status) => {
     return filteredTasks.filter((task) => task.status === status);
   };
 
+  // Get status dot color
   const getStatusDot = (status) => {
     const option = statusOptions.find((o) => o.value === status);
     return option ? option.dotColor : "bg-gray-500";
   };
 
+  // Handle drag end - CORRECTED VERSION
   const handleDragEnd = async (result) => {
     const { destination, source, draggableId } = result;
 
+    // If dropped outside any droppable area
     if (!destination) {
       return;
     }
 
+    // If dropped in the same position
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -169,18 +173,22 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
     const newStatus = destination.droppableId;
     const taskId = draggableId;
 
+    // Find the task being moved
     const taskToUpdate = tasks.find((task) => task._id === taskId);
     if (!taskToUpdate) {
       console.error("Task not found:", taskId);
       return;
     }
 
+    // If the status is the same, no need to update
     if (taskToUpdate.status === newStatus) {
       return;
     }
 
+    // Store original status for potential rollback
     const originalStatus = taskToUpdate.status;
-    UI;
+
+    // Optimistically update the UI
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task._id === taskId ? { ...task, status: newStatus } : task
@@ -196,11 +204,13 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
       });
 
       if (response.status === 200 || response.status === "200") {
+        // Success - call the parent's update handler to refresh counts
         if (onTaskUpdate) {
           await onTaskUpdate();
         }
         console.log("Task status updated successfully");
       } else {
+        // API returned error - revert the optimistic update
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task._id === taskId ? { ...task, status: originalStatus } : task
@@ -209,6 +219,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
         console.error("Failed to update task status:", response.message);
       }
     } catch (err) {
+      // Network or other error - revert the optimistic update
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === taskId ? { ...task, status: originalStatus } : task
@@ -220,6 +231,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
     }
   };
 
+  // Task Card Component
   const TaskCard = ({ task, index }) => {
     const dueDateInfo = formatDate(task.TaskDueDate);
     const assignedDateInfo = formatDate(task.assignedDate);
@@ -244,10 +256,11 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
             } ${isUpdating ? "opacity-60 pointer-events-none" : ""}`}
             style={{
               ...provided.draggableProps.style,
-
+              // Ensure the dragging item has proper z-index
               ...(snapshot.isDragging && { zIndex: 1000 }),
             }}
           >
+            {/* Drag Indicator */}
             <div className="flex items-center justify-between mb-2">
               <div className="flex space-x-1">
                 <DragIndicatorIcon />
@@ -257,6 +270,7 @@ const KanbanView = ({ searchTerm, onTaskUpdate }) => {
               )}
             </div>
 
+            {/* Header Section */}
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
                 <div className="flex items-center space-x-2 mb-2 flex-wrap">
