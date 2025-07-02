@@ -270,7 +270,7 @@ const ProfileSettings = () => {
 
   // Profile View Component - Using Original UI Design
   const ProfileView = () => (
-    <div className="w-full h-[85vh] bg-gray-50">
+    <div className="w-full  bg-gray-50">
       <div className="bg-white h-full">
         <div className="px-8 py-6 border-b border-gray-200 flex justify-between items-center">
           <div>
@@ -375,7 +375,7 @@ const ProfileSettings = () => {
 
   // Edit Profile Component - Using Original UI Design
   const EditProfile = () => (
-    <div className="w-full h-[85vh] bg-gray-50">
+    <div className="w-full  bg-gray-50">
       <div className="w-full h-full bg-white rounded-lg shadow-sm p-4 sm:p-6 md:p-8">
         <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 orange-underline">
           Edit Profile

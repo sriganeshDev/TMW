@@ -17,11 +17,12 @@ import { ProjectDetailsPage } from "./components/projects/UserProject/UserProjec
 import LoginScreen from "./components/empty";
 
 const App = () => {
+  const isLogined = localStorage.getItem("token");
   return (
     <>
       <Routes>
         <Route path="/" element={<SplitScreenAuthUI />} />
-        <Route path="/login" element={<LoginScreen />} />
+
         <Route path="TaskManagementSystem" element={<TaskManagementSystem />} />
         <Route
           path="/smart-HR"
@@ -41,7 +42,12 @@ const App = () => {
           <Route path="todo" element={<Todo />} />
           <Route path="View-project-task" element={<ProjectDetailsPage />} />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="*"
+            element={
+              <Navigate to={isLogined ? "/smart-HR/dashboard" : "/"} replace />
+            }
+          />
         </Route>
       </Routes>
     </>

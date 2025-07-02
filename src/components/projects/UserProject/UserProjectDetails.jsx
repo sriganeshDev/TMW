@@ -14,6 +14,11 @@ import {
 } from "lucide-react";
 import { getuserTaskForproject } from "../../../services/Task/TaskServices";
 import nofound from "./../../../assets/no-data2.gif";
+import {
+  getPriorityColor,
+  getStatusColor,
+  getStatusIcon,
+} from "../../../utils/helpers/helperData";
 export const ProjectDetailsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,7 +26,6 @@ export const ProjectDetailsPage = () => {
   const [projectDetails, setProjectDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Get projectId from navigation state
   const projectId = location.state?.projectId;
 
   useEffect(() => {
@@ -40,7 +44,6 @@ export const ProjectDetailsPage = () => {
       if (response.status === "200" && response.data) {
         setTasks(response.data);
 
-        // Set project details from the first task (since all tasks belong to same project)
         if (response.data.length > 0) {
           setProjectDetails(response.data[0].projectId);
         }
@@ -49,52 +52,6 @@ export const ProjectDetailsPage = () => {
       console.error("Error fetching tasks:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getPriorityColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case "high":
-      case "critical":
-        return "bg-gradient-to-r from-red-50 to-red-100 text-red-700 border-red-200";
-      case "medium":
-        return "bg-gradient-to-r from-yellow-50 to-yellow-100 text-yellow-700 border-yellow-200";
-      case "low":
-        return "bg-gradient-to-r from-green-50 to-green-100 text-green-700 border-green-200";
-      default:
-        return "bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border-gray-200";
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "completed":
-      case "done":
-        return "bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 border-emerald-200";
-      case "in progress":
-      case "active":
-        return "bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 border-blue-200";
-      case "to do":
-      case "pending":
-        return "bg-gradient-to-r from-slate-50 to-slate-100 text-slate-700 border-slate-200";
-      default:
-        return "bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 border-gray-200";
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status?.toLowerCase()) {
-      case "completed":
-      case "done":
-        return <CheckCircle2 className="w-4 h-4" />;
-      case "in progress":
-      case "active":
-        return <AlertCircle className="w-4 h-4" />;
-      case "to do":
-      case "pending":
-        return <Circle className="w-4 h-4" />;
-      default:
-        return <Circle className="w-4 h-4" />;
     }
   };
 
@@ -126,8 +83,7 @@ export const ProjectDetailsPage = () => {
             className="w-20 h-20 sm:w-20 sm:h-20 md:w-30 md:h-30 object-contain mb-4"
           />
           <p className="text-gray-600 mb-4">
-            The project you're looking for doesn't exist or no project ID was
-            provided.
+            The project you're looking for doesn't exist
           </p>
           <button
             onClick={() => navigate(-1)}
@@ -223,9 +179,6 @@ export const ProjectDetailsPage = () => {
           </div>
         </div>
 
-        {/* Project Details Full Width */}
-
-        {/* Tasks Section */}
         <div className="w-full py-4  ">
           <div className=" backdrop-blur-sm rounded-xl border border-gray-200 overflow-hidden flex flex-col max-h-[calc(100vh-9rem)]">
             <div className="p-5 border-b border-gray-200  bg-white">

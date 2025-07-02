@@ -1,865 +1,15 @@
-// import React, { useEffect, useState } from "react";
-// import {
-//   Settings,
-//   Plus,
-//   MoreVertical,
-//   Clock,
-//   Calendar,
-//   Phone,
-//   StickyNote,
-//   FileText,
-//   Mail,
-//   CheckSquare,
-//   ArrowDown,
-//   Lock,
-//   Check,
-// } from "lucide-react";
-// import {
-//   ListChecks, // For "All Tasks"
-//   Hourglass, // For "Pending"
-//   Loader2, // For "In Progress"
-//   CheckCircle2, // For "Completed"
-// } from "lucide-react";
-// import {
-//   Menu,
-//   MenuItem,
-//   ListItemIcon,
-//   ListItemText,
-//   Avatar,
-// } from "@mui/material";
-
-// import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
-
-// import { StepProgress } from "../empty";
-// import TaskCardUi from "../../components/task/TaskCardUi";
-// import { useLocation } from "react-router-dom";
-// import { getSingleProfile } from "../../services/project/ProjectServices";
-// import { ByNameAvater, dateFormatter } from "../../utils/helpers/basicHelper";
-// import { getAllTaskForsingleProj } from "../../services/Task/TaskServices";
-
-// const ProjectManagementUI = () => {
-//   const [activeTab, setActiveTab] = useState("Tasks");
-//   const [sortBy, setSortBy] = useState("Date");
-//   const [taskForProj, setTaskForProj] = useState([]);
-//   const [anchorEl, setAnchorEl] = useState(null);
-//   const open = Boolean(anchorEl);
-//   const [projectData, setProjectData] = useState({});
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-//   // <------------------Fetch Project Detials --------------->
-//   const { state } = useLocation();
-
-//   const getProjectDetials = async () => {
-//     const ProjectDetail = await getSingleProfile(state?.id);
-//     setProjectData(ProjectDetail?.Data);
-//   };
-//   useEffect(() => {
-//     getProjectDetials();
-//   }, []);
-
-//   // <------------------Fetch All Task Data for project --------------->
-//   const getAllTaskForproj = async () => {
-//     const allTask = await getAllTaskForsingleProj(state?.id);
-//     setTaskForProj(allTask?.Data);
-//   };
-//   useEffect(() => {
-//     getAllTaskForproj();
-//   }, []);
-//   console.log(taskForProj, "taskForProj");
-
-//   // <--------------------------------->
-//   const tabs = [
-//     { name: "All Tasks", icon: ListChecks },
-//     { name: "Pending", icon: Hourglass },
-//     { name: "In Progress", icon: Loader2 },
-//     { name: "Completed", icon: CheckCircle2 },
-//   ];
-//   const tasks = [
-//     {
-//       id: 1,
-//       title: "Add a form to Update Task",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-//       status: "Pending",
-//       assigned: "John Doe",
-//     },
-//     {
-//       id: 2,
-//       title: "Make all strokes thinner",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-//       status: "Inprogress",
-//       assigned: "John Doe",
-//     },
-//     {
-//       id: 3,
-//       title: "Update orginal content",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-//       assigned: "John Doe",
-//     },
-//     {
-//       id: 4,
-//       title: "Use only component colours",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-
-//       status: "Pending",
-//       assigned: "John Doe",
-//     },
-//     {
-//       id: 5,
-//       title: "Update orginal content",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-//       status: "Inprogress",
-//       assigned: "John Doe",
-//     },
-//     {
-//       id: 6,
-//       title:
-//         "Use only component colours Use only component coloursUse only component colours ",
-//       priority: "High",
-//       hours: "25 Hrs",
-//       date: "25 Oct 2023",
-//       category: "Calls",
-//       status: "Done",
-//       assigned: "John Doe",
-//     },
-//   ];
-
-//   return (
-//     <div className=" ">
-//       <Menu
-//         anchorEl={anchorEl}
-//         open={open}
-//         onClose={handleClose}
-//         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-//         transformOrigin={{ vertical: "top", horizontal: "right" }}
-//         PaperProps={{
-//           elevation: 1,
-//           sx: {
-//             borderRadius: "8px",
-//             minWidth: 150,
-//             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
-//           },
-//         }}
-//       >
-//         <MenuItem onClick={handleClose}>
-//           <ListItemIcon>
-//             <EditIcon sx={{ width: "20px" }} className=" text-purple-600" />
-//           </ListItemIcon>
-//           <ListItemText
-//             primary="Edit"
-//             primaryTypographyProps={{ fontSize: "0.875rem" }}
-//           />
-//         </MenuItem>
-
-//         <MenuItem onClick={handleClose}>
-//           <ListItemIcon>
-//             <DeleteIcon
-//               sx={{ width: "20px" }}
-//               className="w-3 h-3 text-red-500"
-//             />
-//           </ListItemIcon>
-//           <ListItemText
-//             primary="Delete"
-//             primaryTypographyProps={{ fontSize: "0.875rem" }}
-//           />
-//         </MenuItem>
-//       </Menu>
-//       <div className="bg-white shadow-sm ">
-//         <div className=" w-full flex  px-6 py-4">
-//           <div className="flex items-center w-full justify-between">
-//             <div className="flex items-center space-x-4">
-//               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-//                 <div className="text-white font-bold text-lg">
-//                   {ByNameAvater(projectData.projectName)}
-//                 </div>
-//               </div>
-//               <div>
-//                 <h1 className="text-2xl font-semibold text-gray-900">
-//                   {projectData.projectName || "N/A"}
-//                 </h1>
-//                 {/* <p className="text-sm text-gray-500">Project Id : 154454887</p> */}
-//                 <div className="flex items-center space-x-2 mt-1">
-//                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-//                     <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
-//                     {projectData.projectPriority}
-//                   </span>
-//                   {/* <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-//                     Active
-//                   </span> */}
-//                 </div>
-//               </div>
-//             </div>
-//             <div className="flex items-center space-x-3">
-//               <div className="flex items-center space-x-2 text-sm text-gray-600">
-//                 <Lock className="w-4 h-4" />
-//                 <span>Private</span>
-//               </div>
-//               <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-medium">
-//                 <Check className="w-4 h-4" />
-//                 <span>{projectData?.pipeLine}</span>
-//                 <ArrowDown className="w-4 h-4" />
-//               </div>
-//               <button
-//                 className="p-2 text-gray-400 hover:text-gray-600"
-//                 onClick={handleClick}
-//               >
-//                 <MoreVertical className="w-5 h-5" />
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div className=" w-full  py-6">
-//         <div className=" flex  md:flex-col 3xl:flex-row xl:flex-row   lg:flex-col gap-6 ">
-//           <div className=" space-y-6  w-full xl:w-[450px]  mb-5">
-//             <div className="bg-white rounded-lg w-full h-full shadow-sm p-6">
-//               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-//                 Project Information
-//               </h3>
-//               <div className=" flex flex-col w-full">
-//                 <div className="space-y-4">
-//                   <div>
-//                     <label className="text-sm text-gray-500">
-//                       Project Name
-//                     </label>
-//                     <p className="text-sm text-gray-900">
-//                       {projectData.projectName}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Description</label>
-//                     <p className="text-sm text-gray-900">
-//                       {projectData.description}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Start Date</label>
-//                     <p className="text-sm text-gray-900">
-//                       {dateFormatter(projectData.projectStartDate || "-")}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Due Date</label>
-//                     <p className="text-sm text-gray-900">
-//                       {dateFormatter(projectData.projectDueDate || "-")}
-//                     </p>
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center  !mt-5 justify-between mb-4">
-//                   <h3 className="text-lg font-semibold text-gray-900">
-//                     Responsible Persons
-//                   </h3>
-//                   {/* <button className="text-blue-600 text-sm flex items-center">
-//                     <Plus className="w-4 h-4 mr-1" />
-//                     Add New
-//                   </button> */}
-//                 </div>
-//                 <div className="flex items-center  space-x-2">
-//                   <div className="flex -space-x-2">
-//                     <Avatar
-//                       src="sr"
-//                       alt={"formattedName"}
-//                       sx={{
-//                         width: 32,
-//                         height: 32,
-//                       }}
-//                     >
-//                       {/* <p className="text-sm">{"initials"}</p> */}
-//                     </Avatar>
-//                     <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white"></div>
-//                   </div>
-//                   <span className="text-sm text-gray-500">+05</span>
-//                 </div>
-//               </div>
-//             </div>
-
-//             {/* <div className="bg-white rounded-lg shadow-sm p-6">
-//               <div className="flex items-center justify-between mb-4">
-//                 <h3 className="text-lg font-semibold text-gray-900">Client</h3>
-//                 <button className="text-blue-600 text-sm flex items-center">
-//                   <Plus className="w-4 h-4 mr-1" />
-//                   Add New
-//                 </button>
-//               </div>
-//               <div className="flex items-center space-x-3">
-//                 <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-//                   <span className="text-red-600 text-sm">H</span>
-//                 </div>
-//                 <span className="text-sm text-gray-700">Harbor View</span>
-//               </div>
-//             </div> */}
-//           </div>
-
-//           <div className="bg-white   h-fit w-full rounded-lg shadow-sm">
-//             <div className="flex-1">
-//               <div className="">
-//                 <StepProgress />
-//               </div>
-
-//               <div className="border-b border-gray-200">
-//                 <nav className="flex space-x-8 px-6">
-//                   {tabs.map((tab) => {
-//                     const Icon = tab.icon;
-//                     return (
-//                       <button
-//                         key={tab.name}
-//                         onClick={() => setActiveTab(tab.name)}
-//                         className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
-//                           activeTab === tab.name
-//                             ? "border-red-500 text-red-600"
-//                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-//                         }`}
-//                       >
-//                         <Icon className="w-4 h-4" />
-//                         <span>{tab.name}</span>
-//                       </button>
-//                     );
-//                   })}
-//                 </nav>
-//               </div>
-
-//               <div className="p-6">
-//                 <div className="flex items-center justify-between mb-6">
-//                   <h2 className="text-xl font-semibold text-gray-900">
-//                     All Tasks
-//                   </h2>
-//                   <div className="flex items-center space-x-4">
-//                     <div className="flex items-center space-x-2">
-//                       <span className="text-sm text-gray-500">Sort By</span>
-//                       <select
-//                         value={sortBy}
-//                         onChange={(e) => setSortBy(e.target.value)}
-//                         className="text-sm border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//                       >
-//                         <option>Date</option>
-//                         <option>Priority</option>
-//                         <option>Status</option>
-//                       </select>
-//                     </div>
-//                     <button className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
-//                       <Plus className="w-4 h-4 mr-2" />
-//                       Add New Task
-//                     </button>
-//                   </div>
-//                 </div>
-
-//                 <div className="space-y-4  lg:!h-[43vh]  overflow-auto">
-//                   {tasks.map((task) => (
-//                     <TaskCardUi key={task.id || task._id} task={task} />
-//                   ))}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProjectManagementUI;
-
-// import React, { useEffect, useState } from "react";
-// import {
-//   Settings,
-//   Plus,
-//   MoreVertical,
-//   Clock,
-//   Calendar,
-//   Phone,
-//   StickyNote,
-//   FileText,
-//   Mail,
-//   CheckSquare,
-//   ArrowDown,
-//   Lock,
-//   Check,
-// } from "lucide-react";
-// import {
-//   ListChecks, // For "All Tasks"
-//   Hourglass, // For "Pending"
-//   Loader2, // For "In Progress"
-//   CheckCircle2, // For "Completed"
-// } from "lucide-react";
-// import {
-//   Menu,
-//   MenuItem,
-//   ListItemIcon,
-//   ListItemText,
-//   Avatar,
-// } from "@mui/material";
-
-// import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
-
-// import { StepProgress } from "../empty";
-// import TaskCardUi from "../../components/task/TaskCardUi";
-// import { useLocation } from "react-router-dom";
-// import { getSingleProfile } from "../../services/project/ProjectServices";
-// import { ByNameAvater, dateFormatter } from "../../utils/helpers/basicHelper";
-// import { getAllTaskForsingleProj } from "../../services/Task/TaskServices";
-
-// const ProjectManagementUI = () => {
-//   const [activeTab, setActiveTab] = useState("All Tasks");
-//   const [sortBy, setSortBy] = useState("Date");
-//   const [taskForProj, setTaskForProj] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [anchorEl, setAnchorEl] = useState(null);
-//   const open = Boolean(anchorEl);
-//   const [projectData, setProjectData] = useState({});
-
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-
-//   // <------------------Fetch Project Details --------------->
-//   const { state } = useLocation();
-
-//   const getProjectDetails = async () => {
-//     try {
-//       const ProjectDetail = await getSingleProfile(state?.id);
-//       setProjectData(ProjectDetail?.Data);
-//     } catch (error) {
-//       console.error("Error fetching project details:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     getProjectDetails();
-//   }, []);
-
-//   // <------------------Get Status for API Call --------------->
-//   const getStatusForTab = (tabName) => {
-//     switch (tabName) {
-//       case "Pending":
-//         return "To do";
-//       case "In Progress":
-//         return "In Progress";
-//       case "Completed":
-//         return "Completed";
-//       default:
-//         return null; // For "All Tasks", don't send status
-//     }
-//   };
-
-//   // <------------------Filter Tasks Based on Active Tab --------------->
-//   const filterTasksByTab = (tasks, tabName) => {
-//     if (tabName === "All Tasks") {
-//       return tasks;
-//     }
-//     const status = getStatusForTab(tabName);
-//     return tasks.filter((task) => task.status === status);
-//   };
-
-//   // <------------------Fetch Tasks Based on Active Tab --------------->
-//   const getAllTaskForproj = async (tabName = null) => {
-//     try {
-//       setLoading(true);
-//       // For "All Tasks", don't send status filter
-//       const payload = {};
-
-//       const allTask = await getAllTaskForsingleProj(state?.id, payload);
-//       const tasks = allTask?.Data || [];
-
-//       // Filter tasks based on active tab
-//       const filteredTasks = tabName
-//         ? filterTasksByTab(tasks, tabName)
-//         : filterTasksByTab(tasks, activeTab);
-//       setTaskForProj(filteredTasks);
-//     } catch (error) {
-//       console.error("Error fetching tasks:", error);
-//       setTaskForProj([]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // <------------------Initial Load --------------->
-//   useEffect(() => {
-//     if (state?.id) {
-//       getAllTaskForproj();
-//     }
-//   }, [state?.id]);
-
-//   // <------------------Fetch Tasks When Tab Changes --------------->
-//   useEffect(() => {
-//     if (state?.id) {
-//       getAllTaskForproj(activeTab);
-//     }
-//   }, [activeTab]);
-
-//   // <------------------Sort Tasks --------------->
-//   const sortTasks = (tasks) => {
-//     return [...tasks].sort((a, b) => {
-//       switch (sortBy) {
-//         case "Date":
-//           return new Date(b.TaskDueDate) - new Date(a.TaskDueDate);
-//         case "Priority":
-//           const priorityOrder = { High: 3, Medium: 2, Low: 1 };
-//           return (
-//             (priorityOrder[b.taskPriority] || 0) -
-//             (priorityOrder[a.taskPriority] || 0)
-//           );
-//         case "Status":
-//           return (a.status || "").localeCompare(b.status || "");
-//         default:
-//           return 0;
-//       }
-//     });
-//   };
-
-//   // <------------------Handle Tab Change --------------->
-//   const handleTabChange = (tabName) => {
-//     setActiveTab(tabName);
-//   };
-
-//   // <------------------Get Task Count for Each Tab --------------->
-//   const getTaskCountForTab = (tabName, allTasks) => {
-//     if (tabName === "All Tasks") {
-//       return allTasks.length;
-//     }
-//     const status = getStatusForTab(tabName);
-//     return allTasks.filter((task) => task.status === status).length;
-//   };
-
-//   // <------------------Fetch All Tasks for Counts --------------->
-//   const [allTasks, setAllTasks] = useState([]);
-
-//   const fetchAllTasksForCounts = async () => {
-//     try {
-//       const allTask = await getAllTaskForsingleProj(state?.id, {});
-//       setAllTasks(allTask?.Data || []);
-//     } catch (error) {
-//       console.error("Error fetching all tasks for counts:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (state?.id) {
-//       fetchAllTasksForCounts();
-//     }
-//   }, [state?.id]);
-
-//   // <--------------------------------->
-//   const tabs = [
-//     { name: "All Tasks", icon: ListChecks },
-//     { name: "Pending", icon: Hourglass },
-//     { name: "In Progress", icon: Loader2 },
-//     { name: "Completed", icon: CheckCircle2 },
-//   ];
-
-//   const sortedTasks = sortTasks(taskForProj);
-
-//   return (
-//     <div className=" ">
-//       <Menu
-//         anchorEl={anchorEl}
-//         open={open}
-//         onClose={handleClose}
-//         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-//         transformOrigin={{ vertical: "top", horizontal: "right" }}
-//         PaperProps={{
-//           elevation: 1,
-//           sx: {
-//             borderRadius: "8px",
-//             minWidth: 150,
-//             boxShadow: "0 2px 6px rgba(0, 0, 0, 0.05)",
-//           },
-//         }}
-//       >
-//         <MenuItem onClick={handleClose}>
-//           <ListItemIcon>
-//             <EditIcon sx={{ width: "20px" }} className=" text-purple-600" />
-//           </ListItemIcon>
-//           <ListItemText
-//             primary="Edit"
-//             primaryTypographyProps={{ fontSize: "0.875rem" }}
-//           />
-//         </MenuItem>
-
-//         <MenuItem onClick={handleClose}>
-//           <ListItemIcon>
-//             <DeleteIcon
-//               sx={{ width: "20px" }}
-//               className="w-3 h-3 text-red-500"
-//             />
-//           </ListItemIcon>
-//           <ListItemText
-//             primary="Delete"
-//             primaryTypographyProps={{ fontSize: "0.875rem" }}
-//           />
-//         </MenuItem>
-//       </Menu>
-
-//       <div className="bg-white shadow-sm ">
-//         <div className=" w-full flex  px-6 py-4">
-//           <div className="flex items-center w-full justify-between">
-//             {/* <div className="flex items-center space-x-4">
-//               <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
-//                 <div className="text-white font-bold text-lg">
-//                   {ByNameAvater(projectData.projectName)}
-//                 </div>
-//               </div>
-//               <div>
-//                 <h1 className="text-2xl font-semibold text-gray-900">
-//                   {projectData.projectName || "N/A"}
-//                 </h1>
-//                 <div className="flex items-center space-x-2 mt-1">
-//                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-//                     <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
-//                     {projectData.projectPriority}
-//                   </span>
-//                 </div>
-//               </div>
-//             </div> */}
-//             <div className="flex items-center space-x-3">
-//               <div className="flex items-center space-x-2 text-sm text-gray-600">
-//                 <Lock className="w-4 h-4" />
-//                 <span>Private</span>
-//               </div>
-//               <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-medium">
-//                 <Check className="w-4 h-4" />
-//                 <span>{projectData?.pipeLine}</span>
-//                 <ArrowDown className="w-4 h-4" />
-//               </div>
-//               <button
-//                 className="p-2 text-gray-400 hover:text-gray-600"
-//                 onClick={handleClick}
-//               >
-//                 <MoreVertical className="w-5 h-5" />
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className=" w-full  py-6">
-//         <div className=" flex  md:flex-col 3xl:flex-row xl:flex-row   lg:flex-col gap-6 ">
-//           <div className=" space-y-6  w-full xl:w-[450px]  mb-5">
-//             {/* <div className="bg-white rounded-lg w-full h-full shadow-sm p-6">
-//               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-//                 Project Information
-//               </h3>
-//               <div className=" flex flex-col w-full">
-//                 <div className="space-y-4">
-//                   <div>
-//                     <label className="text-sm text-gray-500">
-//                       Project Name
-//                     </label>
-//                     <p className="text-sm text-gray-900">
-//                       {projectData.projectName}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Description</label>
-//                     <p className="text-sm text-gray-900">
-//                       {projectData.description}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Start Date</label>
-//                     <p className="text-sm text-gray-900">
-//                       {dateFormatter(projectData.projectStartDate || "-")}
-//                     </p>
-//                   </div>
-//                   <div>
-//                     <label className="text-sm text-gray-500">Due Date</label>
-//                     <p className="text-sm text-gray-900">
-//                       {dateFormatter(projectData.projectDueDate || "-")}
-//                     </p>
-//                   </div>
-//                 </div>
-//                 <div className="flex items-center  !mt-5 justify-between mb-4">
-//                   <h3 className="text-lg font-semibold text-gray-900">
-//                     Responsible Persons
-//                   </h3>
-//                 </div>
-//                 <div className="flex items-center  space-x-2">
-//                   <div className="flex -space-x-2">
-//                     <Avatar
-//                       src="sr"
-//                       alt={"formattedName"}
-//                       sx={{
-//                         width: 32,
-//                         height: 32,
-//                       }}
-//                     ></Avatar>
-//                     <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white"></div>
-//                     <div className="w-8 h-8 bg-purple-500 rounded-full border-2 border-white"></div>
-//                   </div>
-//                   <span className="text-sm text-gray-500">+05</span>
-//                 </div>
-//               </div>
-//             </div> */}
-//           </div>
-
-//           <div className="bg-white   h-fit w-full rounded-lg shadow-sm">
-//             <div className="flex-1">
-//               <div className="">
-//                 <StepProgress />
-//               </div>
-
-//               <div className="border-b border-gray-200">
-//                 <nav className="flex space-x-8 px-6">
-//                   {tabs.map((tab) => {
-//                     const Icon = tab.icon;
-//                     const taskCount = getTaskCountForTab(tab.name, allTasks);
-//                     return (
-//                       <button
-//                         key={tab.name}
-//                         onClick={() => handleTabChange(tab.name)}
-//                         disabled={loading}
-//                         className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-//                           activeTab === tab.name
-//                             ? "border-red-500 text-red-600"
-//                             : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-//                         } ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-//                       >
-//                         <Icon className="w-4 h-4" />
-//                         <span>{tab.name}</span>
-//                         <span
-//                           className={`ml-1 px-2 py-1 text-xs rounded-full ${
-//                             activeTab === tab.name
-//                               ? "bg-red-100 text-red-600"
-//                               : "bg-gray-100 text-gray-600"
-//                           }`}
-//                         >
-//                           {taskCount}
-//                         </span>
-//                       </button>
-//                     );
-//                   })}
-//                 </nav>
-//               </div>
-
-//               <div className="p-6">
-//                 <div className="flex items-center justify-between mb-6">
-//                   <h2 className="text-xl font-semibold text-gray-900">
-//                     {activeTab} ({taskForProj.length})
-//                   </h2>
-//                   <div className="flex items-center space-x-4">
-//                     {activeTab === "All Tasks" && (
-//                       <div className="flex items-center space-x-2">
-//                         <span className="text-sm text-gray-500">Sort By</span>
-//                         <select
-//                           value={sortBy}
-//                           onChange={(e) => setSortBy(e.target.value)}
-//                           disabled={loading}
-//                           className="text-sm border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-//                         >
-//                           <option>Date</option>
-//                           <option>Priority</option>
-//                           <option>Status</option>
-//                         </select>
-//                       </div>
-//                     )}
-//                     <button
-//                       className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center disabled:opacity-50"
-//                       disabled={loading}
-//                     >
-//                       <Plus className="w-4 h-4 mr-2" />
-//                       Add New Task
-//                     </button>
-//                   </div>
-//                 </div>
-
-//                 <div className="space-y-4  lg:!h-[43vh]  overflow-auto">
-//                   {loading ? (
-//                     <div className="flex items-center justify-center py-8">
-//                       <div className="flex items-center space-x-2 text-gray-500">
-//                         <div className="w-5 h-5 border-2 border-gray-300 border-t-red-600 rounded-full animate-spin"></div>
-//                         <span>Loading tasks...</span>
-//                       </div>
-//                     </div>
-//                   ) : sortedTasks.length > 0 ? (
-//                     sortedTasks.map((task) => (
-//                       <TaskCardUi key={task._id} task={task} />
-//                     ))
-//                   ) : (
-//                     <div className="text-center py-8 text-gray-500">
-//                       No tasks found for {activeTab.toLowerCase()}
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ProjectManagementUI;
-
-///////////////
-
 import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import nofound from "../../assets/no-data2.gif";
-import {
-  Settings,
-  Plus,
-  MoreVertical,
-  Clock,
-  Calendar,
-  Phone,
-  StickyNote,
-  FileText,
-  Mail,
-  CheckSquare,
-  ArrowDown,
-  Lock,
-  Check,
-  MoreVerticalIcon,
-} from "lucide-react";
-import {
-  ListChecks, // For "All Tasks"
-  Hourglass, // For "Pending"
-  Loader2, // For "In Progress"
-  CheckCircle2, // For "Completed"
-} from "lucide-react";
+import { Settings, Plus, MoreVertical, FileText, Lock } from "lucide-react";
+import { ListChecks, Hourglass, Loader2, CheckCircle2 } from "lucide-react";
 import {
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Avatar,
   Button,
-  IconButton,
-  Chip,
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -912,23 +62,20 @@ const ProjectManagementUI = () => {
   const open = Boolean(anchorEl);
   const [projectData, setProjectData] = useState({});
   const [userDetail, setUserDetial] = useState("");
-  // Task Modal States
+
   const [addEditTaskModal, setAddEditTaskModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [assignedToOptions, setAssignedToOptions] = useState([]);
 
-  // Project Modal States
   const [editProjectModal, setEditProjectModal] = useState(false);
 
-  // Confirmation Modal States
   const [openConfirm, setOpenConfirm] = useState(false);
-  const [deleteType, setDeleteType] = useState(""); // "task" or "project"
+  const [deleteType, setDeleteType] = useState("");
   const [deleteId, setDeleteId] = useState(null);
 
   const navigate = useNavigate();
   const { state } = useLocation();
 
-  // Task Validation Schema
   const taskValidationSchema = Yup.object({
     taskTitle: Yup.string().required("Task Title is required"),
     description: Yup.string().required("Description is required"),
@@ -938,7 +85,6 @@ const ProjectManagementUI = () => {
     taskPriority: Yup.string().required("Task Priority is required"),
   });
 
-  // Project Validation Schema
   const projectValidationSchema = Yup.object({
     projectName: Yup.string().required("Project Name is required"),
     description: Yup.string().required("Description is required"),
@@ -997,7 +143,7 @@ const ProjectManagementUI = () => {
       case "Completed":
         return "Completed";
       default:
-        return null; // For "All Tasks", don't send status
+        return null;
     }
   };
 
@@ -1017,10 +163,9 @@ const ProjectManagementUI = () => {
       const payload = {};
       const allTask = await getAllTaskForsingleProj(state?.id, payload);
       const tasks = allTask?.Data || [];
-      // console.log(tasks, "taskstaskstaskstasks");
 
       setUserDetial(tasks);
-      // console.log("userDetails , userDetails ", userDetail);
+
       const filteredTasks = tabName
         ? filterTasksByTab(tasks, tabName)
         : filterTasksByTab(tasks, activeTab);
@@ -1131,7 +276,7 @@ const ProjectManagementUI = () => {
     try {
       const taskData = {
         ...values,
-        projectId: state?.id, // Always use current project ID
+        projectId: state?.id,
       };
 
       if (editingTask) {
@@ -1157,18 +302,15 @@ const ProjectManagementUI = () => {
       setSubmitting(false);
     }
   };
-  // Add these state variables
+
   const [pendingPipelineStatus, setPendingPipelineStatus] = useState(null);
 
-  // Add these handler functions
   const handlePipelineStatusChange = async (newStatus) => {
     try {
       const response = await updateProject(state?.id, { pipeLine: newStatus });
 
       if (response.status === "200") {
         setProjectData((prev) => ({ ...prev, pipeLine: newStatus }));
-        // Optionally refresh project details
-        // await getProjectDetails();
       }
     } catch (error) {
       console.error("Error updating pipeline status:", error);
@@ -1201,13 +343,12 @@ const ProjectManagementUI = () => {
     console.log("Clicked Delete", id, type);
     setDeleteId(id);
     setDeleteType(type);
-    setOpenConfirm(true); // <-- Make sure this triggers re-render
+    setOpenConfirm(true);
     if (type === "project") {
-      handleClose(); // Ensure this doesn't cause state reset
+      handleClose();
     }
   };
 
-  // Update your existing handleDeleteConfirm function
   const handleDeleteConfirm = async () => {
     try {
       if (deleteType === "pipeline") {
@@ -1609,6 +750,7 @@ const ProjectManagementUI = () => {
         </div>
       </div>
 
+      {/* <<<<<<----- EditTask & Add Task model ------->>>>>> */}
       <CommonSideModel
         openDrawer={addEditTaskModal}
         handleFunction={openAddTaskModal}
@@ -1635,7 +777,6 @@ const ProjectManagementUI = () => {
             <Form>
               <div className="px-6 pt-3 h-[84vh] overflow-auto">
                 <div className="space-y-6">
-                  {/* Project Name Display (Read-only) */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Project Name
@@ -1757,7 +898,7 @@ const ProjectManagementUI = () => {
           )}
         </Formik>
       </CommonSideModel>
-
+      {/* <<<<<<----- EditProject & Add Project model ------->>>>>> */}
       <CommonSideModel
         openDrawer={editProjectModal}
         handleFunction={closeProjectModal}
@@ -1894,7 +1035,6 @@ const ProjectManagementUI = () => {
         </Formik>
       </CommonSideModel>
 
-      {/* Delete Confirmation Modal */}
       {openConfirm && (
         <ConfirmationModal
           open={openConfirm}

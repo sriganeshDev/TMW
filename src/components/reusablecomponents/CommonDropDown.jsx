@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Box,
-  Typography,
-} from "@mui/material";
+import { FormControl, Select, MenuItem, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const StyledFormControl = styled(FormControl)(({ theme, error }) => ({
+const StyledFormControl = styled(FormControl)(({ error }) => ({
   width: "100%",
   "& .MuiOutlinedInput-root": {
     backgroundColor: "white",
@@ -18,10 +11,10 @@ const StyledFormControl = styled(FormControl)(({ theme, error }) => ({
       borderWidth: "1px",
     },
     "&:hover fieldset": {
-      borderColor: error ? "#f44336" : "#999", // Normal hover behavior
+      borderColor: error ? "#f44336" : "#999",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#f44336", // Red when focused/open
+      borderColor: "#f44336",
       borderWidth: "2px",
     },
   },
@@ -35,7 +28,7 @@ const StyledFormControl = styled(FormControl)(({ theme, error }) => ({
   },
 }));
 
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+const StyledMenuItem = styled(MenuItem)(() => ({
   fontSize: "14px",
   padding: "10px 16px",
   "&.Mui-selected": {
@@ -46,10 +39,10 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     },
   },
   "&:hover": {
-    backgroundColor: "#f9f9f9 !important", // Red hover for all items
-    color: "white !important", // White text on red hover
+    backgroundColor: "#f9f9f9 !important",
+    color: "white !important",
   },
-  // Ensure selected item maintains red background even when hovering
+
   "&.Mui-selected:hover": {
     backgroundColor: "#d32f2f !important",
   },
@@ -66,7 +59,6 @@ const RequiredLabel = styled(Typography)({
   },
 });
 
-// Reusable Custom Dropdown Component
 export const CommonDropdown = ({
   label,
   value,

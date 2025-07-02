@@ -472,7 +472,7 @@
 //   );
 // }
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -508,6 +508,13 @@ export default function SplitScreenAuthUI() {
       [e.target.name]: e.target.value,
     });
   };
+
+  const isLogined = localStorage.getItem("token");
+  useEffect(() => {
+    if (isLogined) {
+      navigate("/smart-HR/dashboard");
+    }
+  }, [isLogined]);
 
   const handleSubmit = async () => {
     const { userName, email, password, confirmPassword } = formData;

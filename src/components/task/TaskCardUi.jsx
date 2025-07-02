@@ -1,27 +1,7 @@
 import React, { useState } from "react";
-import {
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-  Box,
-  Typography,
-  Chip,
-  Divider,
-} from "@mui/material";
-import {
-  MoreVertical,
-  Eye,
-  Clock,
-  Calendar,
-  User,
-  FileText,
-  AlertCircle,
-} from "lucide-react";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { Menu, Tooltip, Box, Typography, Chip, Divider } from "@mui/material";
+import { MoreVertical, Eye, Calendar, User, FileText } from "lucide-react";
+
 import {
   formatDate,
   formatDateTime,
@@ -36,13 +16,11 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
-    event.stopPropagation(); // Prevent event bubbling
+    event.stopPropagation();
 
-    // If onMenuClick prop is provided, use it (for the new menu functionality)
     if (onMenuClick) {
       onMenuClick(event, task);
     } else {
-      // Fallback to original behavior
       setAnchorEl(event.currentTarget);
     }
   };
@@ -53,7 +31,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
 
   const TaskDetailsTooltip = () => (
     <Box sx={{ p: 2, maxWidth: 350 }}>
-      {/* Task Header */}
       <Box sx={{ mb: 2 }}>
         <Typography
           variant="h6"
@@ -63,7 +40,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
         </Typography>
       </Box>
 
-      {/* Description */}
       {task.description && (
         <Box sx={{ mb: 2 }}>
           <Typography
@@ -88,7 +64,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
 
       <Divider sx={{ my: 1.5 }} />
 
-      {/* Status and Priority */}
       <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
         <Chip
           label={getStatusDisplay(task.status)}
@@ -129,7 +104,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
         />
       </Box>
 
-      {/* Assignment Information */}
       <Box sx={{ mb: 2 }}>
         <Typography
           variant="body2"
@@ -186,7 +160,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
         </Box>
       </Box>
 
-      {/* Status Timeline */}
       <Box sx={{ mb: 1 }}>
         <Typography
           variant="body2"
@@ -263,11 +236,9 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
       className={`border-l-4 rounded-lg ${getBorderColor(task.status)} w-full`}
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer gap-3 sm:gap-4">
-        {/* Left section */}
         <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 flex-1 min-w-0">
           <div className="flex items-center space-x-3 min-w-0">
             <div className="min-w-0 flex-1">
-              {/* Tooltip now only wraps the task title */}
               <Tooltip
                 title={<TaskDetailsTooltip />}
                 placement="bottom-start"
@@ -331,7 +302,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
             </div>
           </div>
 
-          {/* Priority and Status badges */}
           <div className="flex items-center space-x-2 flex-wrap">
             <span
               className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(
@@ -356,9 +326,7 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
           </div>
         </div>
 
-        {/* Right section */}
         <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 flex-shrink-0">
-          {/* Time and Date info */}
           <div className="flex items-center space-x-4">
             {/* <div className="flex items-center space-x-2 text-sm text-gray-500">
               <Clock className="w-4 h-4 flex-shrink-0" />
@@ -376,7 +344,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
             </div>
           </div>
 
-          {/* Assigned user info */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
               {task.assignedTo?.userName
@@ -405,7 +372,6 @@ const TaskCardUi = ({ task, onMenuClick, module }) => {
         </div>
       </div>
 
-      {/* Original Menu - only show if onMenuClick prop is not provided */}
       {!onMenuClick && (
         <Menu
           anchorEl={anchorEl}

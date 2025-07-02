@@ -12,7 +12,6 @@ import { CommonDropdown } from "../../components/reusablecomponents/CommonDropDo
 import { CommonDatePicker } from "../../components/reusablecomponents/CommonDatePicker";
 import CommonTable from "../../components/reusablecomponents/CommonTable";
 import SearchIcon from "@mui/icons-material/Search";
-import nofound from "../../assets/no-data2.gif";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AssignmentIcon from "@mui/icons-material/Assignment";

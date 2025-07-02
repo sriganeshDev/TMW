@@ -1,6 +1,6 @@
 import React from "react";
-import AdminDashBoard from "../../components/DashBoard/AdminDashBoard";
-import UserDashboard from "../../components/DashBoard/UserDashBoard";
+import AdminDashBoard from "./AdminDashBoard";
+import UserDashboard from "./UserDashBoard";
 
 const DashboardPage = () => {
   const userRole = localStorage.getItem("role");

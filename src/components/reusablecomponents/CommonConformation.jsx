@@ -28,8 +28,8 @@ const ConfirmationModal = ({
   message,
   confirmText = "Delete",
   cancelText = "Cancel",
-  type = "delete", // delete, warning, info
-  icon, // NEW: Custom icon prop
+  type = "delete",
+  icon,
 }) => {
   const handleClose = () => {
     setOpen(false);
@@ -54,7 +54,7 @@ const ConfirmationModal = ({
     switch (type) {
       case "delete":
         return {
-          icon: icon || <DeleteIcon sx={{ fontSize: 28 }} />, // Use custom icon if provided
+          icon: icon || <DeleteIcon sx={{ fontSize: 28 }} />,
           iconBg: "#fee2e2",
           iconColor: "#dc2626",
           confirmBg: "#dc2626",
@@ -62,7 +62,7 @@ const ConfirmationModal = ({
         };
       case "warning":
         return {
-          icon: icon || <WarningAmberIcon sx={{ fontSize: 28 }} />, // Use custom icon if provided
+          icon: icon || <WarningAmberIcon sx={{ fontSize: 28 }} />,
           iconBg: "#fef3c7",
           iconColor: "#d97706",
           confirmBg: "#d97706",
@@ -70,7 +70,7 @@ const ConfirmationModal = ({
         };
       case "pipeline":
         return {
-          icon: icon || <WarningAmberIcon sx={{ fontSize: 28 }} />, // Use custom icon if provided
+          icon: icon || <WarningAmberIcon sx={{ fontSize: 28 }} />,
           iconBg: "#e0f2fe",
           iconColor: "#0277bd",
           confirmBg: "#0277bd",
@@ -78,7 +78,7 @@ const ConfirmationModal = ({
         };
       default:
         return {
-          icon: icon || <DeleteIcon sx={{ fontSize: 28 }} />, // Use custom icon if provided
+          icon: icon || <DeleteIcon sx={{ fontSize: 28 }} />,
           iconBg: "#fee2e2",
           iconColor: "#dc2626",
           confirmBg: "#dc2626",
@@ -119,7 +119,6 @@ const ConfirmationModal = ({
         },
       }}
     >
-      {/* Header with close button */}
       <Box
         sx={{
           position: "relative",
@@ -148,7 +147,6 @@ const ConfirmationModal = ({
         </IconButton>
       </Box>
 
-      {/* Content */}
       <DialogContent
         sx={{
           textAlign: "center",
@@ -157,7 +155,6 @@ const ConfirmationModal = ({
           paddingBottom: 3,
         }}
       >
-        {/* Icon */}
         <Box
           sx={{
             width: 80,
@@ -185,7 +182,6 @@ const ConfirmationModal = ({
           </Box>
         </Box>
 
-        {/* Title */}
         <Typography
           variant="h5"
           sx={{

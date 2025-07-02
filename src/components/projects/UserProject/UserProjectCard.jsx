@@ -1,56 +1,14 @@
 import React from "react";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import { useNavigate } from "react-router-dom";
+import {
+  getPipelineChipColor,
+  getPriorityBorderColor,
+  getPriorityChipColor,
+} from "../../../utils/helpers/helperData";
 
 const UserProjectCard = ({ projectsWithTasks }) => {
   const navigate = useNavigate();
-
-  const getPriorityBorderColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case "high":
-      case "critical":
-        return "bg-gradient-to-r from-red-500 to-red-600";
-      case "medium":
-        return "bg-gradient-to-r from-yellow-500 to-orange-500";
-      case "low":
-        return "bg-gradient-to-r from-green-500 to-emerald-500";
-      default:
-        return "bg-gradient-to-r from-gray-400 to-gray-500";
-    }
-  };
-
-  const getPriorityChipColor = (priority) => {
-    switch (priority?.toLowerCase()) {
-      case "high":
-      case "critical":
-        return "bg-red-100 text-red-700";
-      case "medium":
-        return "bg-yellow-100 text-yellow-700";
-      case "low":
-        return "bg-green-100 text-green-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  const getPipelineChipColor = (pipeline) => {
-    switch (pipeline?.toLowerCase()) {
-      case "completed":
-      case "done":
-        return "bg-green-100 text-green-700";
-      case "in progress":
-      case "active":
-        return "bg-blue-100 text-blue-700";
-      case "pending":
-      case "waiting":
-        return "bg-yellow-100 text-yellow-700";
-      case "on hold":
-      case "paused":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
 
   const getGridClasses = () => {
     const count = projectsWithTasks.length;
@@ -121,19 +79,35 @@ const UserProjectCard = ({ projectsWithTasks }) => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-3">
-              <span
-                className={`px-4 py-2 rounded-xl text-sm font-semibold flex-1 text-center ${getPipelineChipColor(
-                  project.pipeLine
-                )}`}
-              >
-                {project.pipeLine}
-              </span>
-              <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-xl border border-blue-200">
-                <AssignmentOutlinedIcon />
-                <span className="text-sm font-semibold text-blue-600">
-                  {project.taskCount}
-                </span>
+            <div className="mb-3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Pipeline Status
+                  </span>
+                </div>
+                <div
+                  className={`w-full px-4 py-3 rounded-xl text-sm font-semibold text-center transition-all duration-200 ${getPipelineChipColor(
+                    project.pipeLine
+                  )}`}
+                >
+                  {project.pipeLine}
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                    Total Tasks
+                  </span>
+                </div>
+                <div className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-50 to-indigo-50 px-4 py-3 rounded-xl border border-blue-200 transition-all duration-200 hover:from-blue-100 hover:to-indigo-100">
+                  <AssignmentOutlinedIcon className="text-blue-600" />
+                  <span className="text-sm font-semibold text-blue-700">
+                    {project.taskCount}
+                    {project.taskCount === 1 ? "Task" : "Tasks"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

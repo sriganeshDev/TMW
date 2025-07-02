@@ -2565,6 +2565,7 @@
 // };
 
 // export default CommonTable;
+
 import React, { useState, useMemo, useEffect } from "react";
 import {
   Table,
@@ -2591,28 +2592,23 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { ChevronUp, ChevronDown } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 import {
   getFontSize,
-  getPadding,
   getPipelineStageColor,
   getPriorityBgColor,
   getPriorityDotColor,
   getPriorityTextColor,
   getResponsiveHeight,
   getResponsiveMinHeight,
-  getResponsivePaginationOptions,
-  getResponsiveRowsPerPage,
   getStatusBgColors,
   getStatusDotColor,
   getStatusTextColor,
 } from "../../utils/helpers/basicHelper";
 
-// Generate color based on name (consistent color for same name)
 const getColorFromName = (name) => {
-  if (!name) return "#1976d2"; // fallback color
+  if (!name) return "#1976d2";
 
   let hash = 0;
   for (let i = 0; i < name.length; i++) {
@@ -2636,7 +2632,7 @@ const ByNameAvatar = (name) => {
 const CommonTable = ({
   data = [],
   columns = [],
-  itemsPerPage = 5, // Changed from 10 to 5
+  itemsPerPage = 5,
   onEdit = null,
   onDelete = null,
   module,
@@ -2648,7 +2644,7 @@ const CommonTable = ({
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(itemsPerPage);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
-  const [containerHeight, setContainerHeight] = useState("auto");
+
   const router = useNavigate();
   const theme = useTheme();
 
@@ -2660,18 +2656,7 @@ const CommonTable = ({
   const isXXLarge = useMediaQuery(theme.breakpoints.up("xl"));
 
   useEffect(() => {
-    const responsiveRowsPerPage = getResponsiveRowsPerPage(
-      isExtraSmall,
-      isSmall,
-      isMedium,
-      isLarge,
-      isXXLarge,
-      isExtraLarge
-    );
-    if (responsiveRowsPerPage !== rowsPerPage) {
-      setRowsPerPage(responsiveRowsPerPage);
-      setPage(0);
-    }
+    setPage(0);
   }, [isExtraSmall, isSmall, isMedium, isLarge, isExtraLarge]);
 
   const handleSort = (key) => {
@@ -2713,6 +2698,19 @@ const CommonTable = ({
     }
 
     if (columnKey === "discription") {
+      // Increased width for project module
+      if (module === "projectPage") {
+        if (isExtraSmall) return "150px";
+        if (isSmall && !isMedium) return "180px";
+        if (isSmall) return "200px";
+        if (isMedium && !isLarge) return "240px";
+        if (isMedium) return "280px";
+        if (isLarge && !isXXLarge) return "320px";
+        if (isExtraLarge) return "360px";
+        return "400px";
+      }
+
+      // Default width for other modules
       if (isExtraSmall) return "100px";
       if (isSmall && !isMedium) return "120px";
       if (isSmall) return "140px";
@@ -3286,7 +3284,7 @@ const CommonTable = ({
             setRowsPerPage(parseInt(e.target.value, 10));
             setPage(0);
           }}
-          rowsPerPageOptions={[5, 10, 25, 50]} // Fixed pagination options
+          rowsPerPageOptions={[5, 10, 25, 50]}
           sx={{
             borderTop: "1px solid rgba(224, 224, 224, 1)",
             backgroundColor: "#fafafa",
@@ -3513,7 +3511,7 @@ const CommonTable = ({
                         column.key === "discription"
                           ? getColumnWidth(column.key)
                           : "none",
-                      // Enhanced padding for card look
+
                       paddingTop: isExtraSmall
                         ? "16px"
                         : isSmall
@@ -3559,7 +3557,6 @@ const CommonTable = ({
         </Table>
       </TableContainer>
 
-      {/* Pagination */}
       <TablePagination
         component="div"
         count={data.length}
@@ -3570,7 +3567,8 @@ const CommonTable = ({
           setRowsPerPage(parseInt(e.target.value, 10));
           setPage(0);
         }}
-        rowsPerPageOptions={getResponsivePaginationOptions()}
+        // rowsPerPageOptions={getResponsivePaginationOptions()}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         sx={{
           borderTop: "1px solid rgba(224, 224, 224, 1)",
           backgroundColor: "#fafafa",
@@ -3597,7 +3595,6 @@ const CommonTable = ({
             fontSize: getFontSize(
               "caption",
               isExtraSmall,
-              isExtraSmall,
               isSmall,
               isMedium,
               isLarge,
@@ -3610,7 +3607,5 @@ const CommonTable = ({
     </Paper>
   );
 };
-
-// Enhanced color helper functions
 
 export default CommonTable;

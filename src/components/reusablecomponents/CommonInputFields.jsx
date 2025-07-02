@@ -22,7 +22,7 @@ export default function CustomTextField({ label, ...props }) {
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-const StyledTextField = styled(TextField)(({ theme, error }) => ({
+const StyledTextField = styled(TextField)(({ error }) => ({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "white",
     "& fieldset": {
@@ -30,10 +30,10 @@ const StyledTextField = styled(TextField)(({ theme, error }) => ({
       borderWidth: "1px",
     },
     "&:hover fieldset": {
-      borderColor: error ? "#f44336" : "#999", // Normal hover behavior
+      borderColor: error ? "#f44336" : "#999",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#f44336", // Red when focused
+      borderColor: "#f44336",
       borderWidth: "2px",
     },
   },
@@ -46,7 +46,7 @@ const StyledTextField = styled(TextField)(({ theme, error }) => ({
       opacity: 1,
     },
   },
-  // Additional styling for multiline (textarea)
+
   "& .MuiOutlinedInput-inputMultiline": {
     padding: "12px 14px",
     fontSize: "14px",
@@ -79,14 +79,13 @@ export const CommonTextField = ({
   fullWidth = true,
   disabled = false,
   type,
-  variant, // "textfield" or "textarea"
+  variant,
   rows = 4,
   minRows = 2,
   maxRows = 8,
   helperText = "",
   ...props
 }) => {
-  // Determine if it's a textarea based on variant prop
   const isTextArea = variant === "textarea";
 
   return (
@@ -101,7 +100,7 @@ export const CommonTextField = ({
         fullWidth={fullWidth}
         error={error}
         disabled={disabled}
-        type={isTextArea ? undefined : type} // Don't set type for textarea
+        type={isTextArea ? undefined : type}
         multiline={isTextArea}
         rows={isTextArea ? rows : undefined}
         minRows={isTextArea ? minRows : undefined}
@@ -113,7 +112,7 @@ export const CommonTextField = ({
         variant="outlined"
         {...props}
         InputLabelProps={{
-          shrink: false, // Hide the default label since we use custom label
+          shrink: false,
         }}
       />
     </Box>

@@ -5,7 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-const StyledDatePicker = styled(DatePicker)(({ theme, error }) => ({
+const StyledDatePicker = styled(DatePicker)(({ error }) => ({
   "& .MuiOutlinedInput-root": {
     backgroundColor: "white",
     "& fieldset": {
@@ -16,7 +16,7 @@ const StyledDatePicker = styled(DatePicker)(({ theme, error }) => ({
       borderColor: error ? "#f44336" : "#999",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "#f44336", // Red when focused/open
+      borderColor: "#f44336",
       borderWidth: "2px",
     },
   },
@@ -35,17 +35,17 @@ const StyledDatePicker = styled(DatePicker)(({ theme, error }) => ({
     "& .MuiIconButton-root": {
       color: "#666",
       "&:hover": {
-        backgroundColor: "rgba(244, 67, 54, 0.04)", // Light red hover for icon
+        backgroundColor: "rgba(244, 67, 54, 0.04)",
       },
     },
   },
 }));
 
 const RequiredLabel = styled(Typography)({
-  fontSize: "12px", // Reduced font size for a more compact label
+  fontSize: "12px",
   fontWeight: 500,
   color: "#333",
-  marginBottom: "4px", // Reduced margin between label and input
+  marginBottom: "4px",
   "& .required": {
     color: "#f44336",
     marginLeft: "2px",
